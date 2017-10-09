@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="api_key">@string/private_api_key</string>
+    <string name="base_url">https://api.themoviedb.org/3/movie</string>
+    <string name="sort_popular">...popularity</string>
+    <string name="sort_top_rated">...average vote</string>
+    <string name="sort">Sort by...</string>
+    <string name="base_url_for_poster_image">http://image.tmdb.org/t/p/</string>
+    <string name="poster_image_size">w342</string>
+    <string name="no_internet_connection_error_message">No Internet connection...</string>
+</resources>
