@@ -6,9 +6,11 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Scanner;
 
 /**
@@ -16,6 +18,8 @@ import java.util.Scanner;
  */
 
 public class NetworkUtils {
+
+    public static String TAG = "**** NetworkUtils ****";
 
 
 
@@ -26,6 +30,7 @@ public class NetworkUtils {
         String apiKey = context.getString(R.string.api_key);
         String baseUrl =context.getString(R.string.base_url);
 
+
         Uri builtUri = Uri.parse(baseUrl).buildUpon()
                 .appendQueryParameter("api_key", apiKey)
                 .appendEncodedPath(sortingType)
@@ -33,18 +38,73 @@ public class NetworkUtils {
 
 
 
-
-
         URL url = null;
         try {
-            url = new URL(builtUri.toString());
+            url = new URL(URLDecoder.decode(builtUri.toString(), "UTF-8"));
+            Log.v("***", url.toString());
         } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
         return url;
 
     }
+
+    public static URL buildMovieDetailsURL(Context context, long movieId) {
+
+        String apiKey = context.getString(R.string.api_key);
+        String baseUrl = context.getString(R.string.base_url);
+
+        Uri builtUri = Uri.parse(baseUrl).buildUpon()
+                .appendQueryParameter("api_key", apiKey)
+                .appendQueryParameter("append_to_response", "videos,reviews")
+                .appendEncodedPath(Long.toString(movieId))
+                .build();
+
+        URL url = null;
+
+        try {
+
+            url = new URL(URLDecoder.decode(builtUri.toString(), "UTF-8"));
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+
+        return url;
+
+
+    }
+
+    public static Uri buildYoutubeUrl(Context context, String youtubeKey) {
+        String baseUrl = "https://www.youtube.com/watch";
+
+        Uri builtUri = Uri.parse(baseUrl).buildUpon()
+                .appendQueryParameter("v", youtubeKey)
+                .build();
+        URL url = null;
+
+        try {
+            url = new URL(URLDecoder.decode(builtUri.toString(), "UTF-8"));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return builtUri;
+
+    }
+
+
+
+
+
 
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();

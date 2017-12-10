@@ -1,24 +1,18 @@
 package com.adriangrabowski.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
 
             URL url = NetworkUtils.buildURL(this, sortingType );
 
+
+
             new MovieDBQueryTask().execute(url);
 
         }
@@ -131,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(URL... urls) {
             URL searchUrl = urls[0];
             String searchResults = null;
+
 
             try {
                 searchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
@@ -196,9 +193,20 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.sort_by_popularity: sortingType = "popular"; populateList(); return true;
             case R.id.sort_by_rating: sortingType = "top_rated"; populateList(); return true;
+            case R.id.show_favs: startShowFavouriteMoviesActivity(); return true;
             default: return super.onOptionsItemSelected(item);
         }
 
 
     }
+
+    private void startShowFavouriteMoviesActivity() {
+
+        Intent intent = new Intent(context, FavouriteMovies.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+        startActivity(intent);
+
+    }
+
 }

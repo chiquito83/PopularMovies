@@ -3,7 +3,7 @@
     package="com.adriangrabowski.popularmovies">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -19,7 +19,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetailActivity"></activity>
+        <activity
+            android:name=".DetailActivity"
+            android:label="Details:" />
+        <activity
+            android:name=".ReviewsActivity"
+            android:label="Reviews:"></activity>
+
+        <provider
+            android:name=".database.FavouriteMovieContentProvider"
+            android:authorities="com.adriangrabowski.popularmovies"
+            android:exported="false" />
+
+        <activity android:name=".FavouriteMovies"
+            android:label="Favourite Movies:"></activity>
     </application>
 
 </manifest>
