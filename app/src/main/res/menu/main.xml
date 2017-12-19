@@ -7,7 +7,7 @@
 
             <item
                 android:id="@+id/sort_by_rating"
-                android:title="@string/sort_top_rated"/>
+                android:title="@string/sort_top_rated" />
 
             <item
                 android:id="@+id/sort_by_popularity"
@@ -19,11 +19,7 @@
 
     <item
         android:id="@+id/show_favs"
-        android:title="Show favourites"
-        />
-
-
-
+        android:title="Show favourites" />
 
 
 </menu>

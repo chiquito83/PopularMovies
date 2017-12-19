@@ -12,23 +12,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/detail_poster_image_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="8dp"/>
+                android:padding="8dp" />
+
             <CheckBox
                 android:checked="false"
                 android:id="@+id/star_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="?android:attr/starStyle"
-                android:onClick="toggleFavouriteMovie"
-                />
+                android:onClick="toggleFavouriteMovie" />
 
             <TextView
                 android:id="@+id/detail_title_text_view"
@@ -38,7 +37,7 @@
                 android:textAllCaps="true"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:paddingBottom="16dp"/>
+                android:paddingBottom="16dp" />
 
             <TextView
                 android:id="@+id/detail_overview_text_view"
@@ -46,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:paddingBottom="16dp"/>
+                android:paddingBottom="16dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -63,8 +62,7 @@
                 <TextView
                     android:id="@+id/detail_user_rating_text_view"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -93,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:text="Show reviews"
                 android:visibility="invisible"
-                android:onClick="showReviews"/>
+                android:onClick="showReviews" />
 
             <LinearLayout
                 android:id="@+id/trailers_linear_layout"
@@ -103,6 +101,24 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/reviews_header"
+                android:textAllCaps="true"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reviews:"
+                android:layout_marginTop="24dp"
+                android:padding="8dp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/reviews_text_view2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"/>
+
 
 
 
@@ -111,8 +127,6 @@
 
 
         </LinearLayout>
-
-
 
 
     </ScrollView>

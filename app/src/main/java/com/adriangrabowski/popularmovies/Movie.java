@@ -49,19 +49,14 @@ public class Movie implements Serializable {
         posterUrl = poster;
 
 
-
-
-
     }
 
 
-    public Movie(JSONObject jsonObject, Context context)  {
+    public Movie(JSONObject jsonObject, Context context) {
 
         currentContext = context;
         reviews = new HashSet<>();
         trailers = new HashSet<>();
-
-
 
 
         try {
@@ -76,14 +71,7 @@ public class Movie implements Serializable {
         }
 
 
-
-
-
         posterUrl = createPosterUrl(posterPath);
-
-
-
-
 
 
     }
@@ -103,9 +91,7 @@ public class Movie implements Serializable {
     }
 
 
-
-
-    public String getPosterUrl(){
+    public String getPosterUrl() {
         return posterUrl;
     }
 
@@ -150,7 +136,7 @@ public class Movie implements Serializable {
         reviews.clear();
     }
 
-    public class Review implements Serializable{
+    public class Review implements Serializable {
         private String id;
         private String author;
         private String content;
@@ -183,7 +169,7 @@ public class Movie implements Serializable {
         }
     }
 
-    public class Trailer implements Serializable{
+    public class Trailer implements Serializable {
         private String id;
         private String name;
         private String siteName;

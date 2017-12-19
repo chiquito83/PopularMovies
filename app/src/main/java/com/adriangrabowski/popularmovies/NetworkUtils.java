@@ -22,20 +22,16 @@ public class NetworkUtils {
     public static String TAG = "**** NetworkUtils ****";
 
 
-
-
-
     public static URL buildURL(Context context, String sortingType) {
 
         String apiKey = context.getString(R.string.api_key);
-        String baseUrl =context.getString(R.string.base_url);
+        String baseUrl = context.getString(R.string.base_url);
 
 
         Uri builtUri = Uri.parse(baseUrl).buildUpon()
                 .appendQueryParameter("api_key", apiKey)
                 .appendEncodedPath(sortingType)
                 .build();
-
 
 
         URL url = null;
@@ -100,10 +96,6 @@ public class NetworkUtils {
         return builtUri;
 
     }
-
-
-
-
 
 
     public static String getResponseFromHttpUrl(URL url) throws IOException {

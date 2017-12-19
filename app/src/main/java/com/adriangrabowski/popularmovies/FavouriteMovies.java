@@ -18,15 +18,12 @@ public class FavouriteMovies extends AppCompatActivity {
     Context context;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite_movies);
 
         context = this;
-
 
 
         listView = (ListView) findViewById(R.id.favourite_movies_list);
@@ -39,7 +36,6 @@ public class FavouriteMovies extends AppCompatActivity {
         listView.setAdapter(favouriteMovieAdapter);
 
 
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -47,20 +43,10 @@ public class FavouriteMovies extends AppCompatActivity {
                 long id = (long) view.getTag();
 
 
-
-
                 Cursor movieCursor = QueryMethods.getMovieWithId(context, id);
 
 
-
                 Movie movie = getMovieFromCursor(movieCursor);
-
-
-
-
-
-
-
 
 
                 Intent intent = new Intent(view.getContext(), DetailActivity.class);
@@ -68,11 +54,7 @@ public class FavouriteMovies extends AppCompatActivity {
                 intent.putExtra("MOVIE", movie);
 
 
-
-
-
                 startActivity(intent);
-
 
 
             }

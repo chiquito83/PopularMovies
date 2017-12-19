@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String sortingType;
 
-
+    private static final String SORTING_TYPE = "sorting_type";
 
 
     @Override
@@ -61,44 +61,60 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(moviesAdapter);
 
 
-
-
-
         context = getApplicationContext();
 
+        sortingType = "popular";
 
-        sortingType = "popular";  //default
+
+
+        if(savedInstanceState != null) {
+
+            sortingType = savedInstanceState.getString(SORTING_TYPE, "popular");
+
+        }
+
+
+
+
 
         populateList();
 
 
     }
 
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        savedInstanceState.putString(SORTING_TYPE, sortingType);
+
+        super.onSaveInstanceState(savedInstanceState);
+
+
+    }
+
+
+
     private void populateList() {
 
-        if (isInternetConnectionAvailable()){
+        if (isInternetConnectionAvailable()) {
 
             movieList.clear();
 
-            URL url = NetworkUtils.buildURL(this, sortingType );
-
+            URL url = NetworkUtils.buildURL(this, sortingType);
 
 
             new MovieDBQueryTask().execute(url);
 
-        }
-
-        else {
+        } else {
             showToastMessageNoInternetConnection();
 
         }
 
     }
 
-    private boolean isInternetConnectionAvailable(){
+    private boolean isInternetConnectionAvailable() {
 
         ConnectivityManager cm =
-                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
@@ -112,13 +128,6 @@ public class MainActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(context, R.string.no_internet_connection_error_message, Toast.LENGTH_LONG);
         toast.show();
     }
-
-
-
-
-
-
-
 
 
     private class MovieDBQueryTask extends AsyncTask<URL, Void, String> {
@@ -137,11 +146,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-
-
             return searchResults;
         }
-
 
 
         @Override
@@ -158,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
-
                 for (int i = 0; i < jsonArray.length(); i++) {
 
                     try {
@@ -167,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
 
 
                 }
@@ -191,10 +195,19 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.sort_by_popularity: sortingType = "popular"; populateList(); return true;
-            case R.id.sort_by_rating: sortingType = "top_rated"; populateList(); return true;
-            case R.id.show_favs: startShowFavouriteMoviesActivity(); return true;
-            default: return super.onOptionsItemSelected(item);
+            case R.id.sort_by_popularity:
+                sortingType = "popular";
+                populateList();
+                return true;
+            case R.id.sort_by_rating:
+                sortingType = "top_rated";
+                populateList();
+                return true;
+            case R.id.show_favs:
+                startShowFavouriteMoviesActivity();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
 

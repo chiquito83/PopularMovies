@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -33,12 +34,12 @@ public class DetailActivity extends AppCompatActivity {
     private TextView overview;
     private TextView rating;
     private TextView releaseDate;
-    private Button showReviewsButton;
     private LinearLayout trailersLayout;
     private Context context;
+    private TextView reviewsTextView;
+    private TextView reviewsHeader;
 
     CheckBox starCheckBox;
-
 
 
     @Override
@@ -53,28 +54,21 @@ public class DetailActivity extends AppCompatActivity {
         overview = (TextView) findViewById(R.id.detail_overview_text_view);
         rating = (TextView) findViewById(R.id.detail_user_rating_text_view);
         releaseDate = (TextView) findViewById(R.id.detail_release_date_text_view);
-        showReviewsButton = (Button) findViewById(R.id.show_reviews_button);
         trailersLayout = (LinearLayout) findViewById(R.id.trailers_linear_layout);
         starCheckBox = (CheckBox) findViewById(R.id.star_checkbox);
-
-
-
+        reviewsTextView = (TextView) findViewById(R.id.reviews_text_view2);
+        reviewsHeader = (TextView) findViewById(R.id.reviews_header);
 
 
         Intent intent = getIntent();
 
 
-         if (intent == null) {
-           finish();
+        if (intent == null) {
+            finish();
         }
 
 
         movie = (Movie) intent.getSerializableExtra("MOVIE");
-
-
-
-
-
 
 
         Picasso.with(context).load(movie.getPosterUrl()).into(poster);
@@ -84,7 +78,7 @@ public class DetailActivity extends AppCompatActivity {
         rating.setText(movie.getRating().toString());
         releaseDate.setText(movie.getReleaseDate());
 
-        movie.clearTrailersAndReviews();
+        //movie.clearTrailersAndReviews();
 
         new DetailsQueryTask().execute(NetworkUtils.buildMovieDetailsURL(this, movie.getId()));
 
@@ -94,6 +88,7 @@ public class DetailActivity extends AppCompatActivity {
         } else {
             starCheckBox.setChecked(false);
         }
+
 
 
 
@@ -111,7 +106,6 @@ public class DetailActivity extends AppCompatActivity {
         }
 
 
-
     }
 
     public void showReviews(View view) {
@@ -123,9 +117,12 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        //favsHelper.close();
         super.onDestroy();
     }
+    
+
+
+
 
     private class DetailsQueryTask extends AsyncTask<URL, Void, String> {
 
@@ -149,12 +146,11 @@ public class DetailActivity extends AppCompatActivity {
             if (s != null && !s.equals("")) {
 
 
-
                 try {
                     JSONArray reviewsArray = JSONMovieUtils.makeJSONReviewsArray(s);
 
 
-                    for (int i=0; i < reviewsArray.length(); i++ ) {
+                    for (int i = 0; i < reviewsArray.length(); i++) {
 
                         JSONObject jo = reviewsArray.getJSONObject(i);
 
@@ -163,10 +159,9 @@ public class DetailActivity extends AppCompatActivity {
                         String content = jo.getString("content");
 
 
-
                         movie.addReview(id, author, content);
                     }
-                    
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -175,7 +170,7 @@ public class DetailActivity extends AppCompatActivity {
                 try {
                     JSONArray trailersArray = JSONMovieUtils.makeJSONTrailersArray(s);
 
-                    for (int i=0; i < trailersArray.length(); i++) {
+                    for (int i = 0; i < trailersArray.length(); i++) {
 
                         JSONObject jo = trailersArray.getJSONObject(i);
 
@@ -196,19 +191,17 @@ public class DetailActivity extends AppCompatActivity {
             }
 
 
-
             HashSet<Movie.Review> reviews = (HashSet<Movie.Review>) movie.getReviews();
 
             if (!reviews.isEmpty()) {
-                showReviewsButton.setText("Show reviews (" + reviews.size() + ")");
-                showReviewsButton.setVisibility(View.VISIBLE);
+
+                reviewsHeader.setVisibility(View.VISIBLE);
             }
 
 
             ArrayList<Movie.Trailer> movieTrailers = new ArrayList<>(movie.getTrailers());
 
-            for (Movie.Trailer trailer : movieTrailers
-                 ) {
+            for (Movie.Trailer trailer : movieTrailers) {
 
 
                 if (trailer.getSiteName().equals("YouTube")) {
@@ -234,9 +227,13 @@ public class DetailActivity extends AppCompatActivity {
                 }
 
 
-
             }
 
+
+            for (Movie.Review review : reviews) {
+                reviewsTextView.append("\n" + review.getAuthor() + ":" + "\n" + review.getContent() + "\n\n");
+
+            }
 
 
 

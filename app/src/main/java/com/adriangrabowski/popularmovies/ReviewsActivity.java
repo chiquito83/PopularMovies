@@ -29,9 +29,8 @@ public class ReviewsActivity extends AppCompatActivity {
 
         ArrayList<Movie.Review> reviews = new ArrayList<>(movie.getReviews());
 
-        for (Movie.Review review: reviews
-             ) {
-            tvReviews.append("\n" + review.getAuthor() + ":" + "\n" + review.getContent() + "\n\n" );
+        for (Movie.Review review : reviews) {
+            tvReviews.append("\n" + review.getAuthor() + ":" + "\n" + review.getContent() + "\n\n");
         }
 
 

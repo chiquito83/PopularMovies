@@ -32,7 +32,6 @@ public class FavouriteMovieAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
 
-
         TextView tvTitle = (TextView) view.findViewById(R.id.fav_movie_title);
 
         String title = cursor.getString(cursor.getColumnIndexOrThrow(FavouriteMovieContract.FavouriteMovieEntry.COLUMN_NAME_MOVIE_TITLE));
@@ -43,10 +42,6 @@ public class FavouriteMovieAdapter extends CursorAdapter {
         view.setTag(new Long(id));
 
     }
-
-
-
-
 
 
 }

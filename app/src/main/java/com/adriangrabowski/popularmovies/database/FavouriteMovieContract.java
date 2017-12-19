@@ -16,7 +16,8 @@ public final class FavouriteMovieContract {
     public static final String PATH_FAVOURITE_MOVIES = "movies";
 
 
-    private FavouriteMovieContract() {}
+    private FavouriteMovieContract() {
+    }
 
     public static class FavouriteMovieEntry implements BaseColumns {
 

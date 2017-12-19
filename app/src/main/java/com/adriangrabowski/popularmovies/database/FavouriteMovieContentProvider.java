@@ -48,7 +48,6 @@ public class FavouriteMovieContentProvider extends ContentProvider {
     }
 
 
-
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
@@ -158,8 +157,6 @@ public class FavouriteMovieContentProvider extends ContentProvider {
                 String id = uri.getPathSegments().get(1);
 
 
-
-
                 moviesDeleted = db.delete(FavouriteMovieContract.FavouriteMovieEntry.TABLE_NAME,
                         FavouriteMovieContract.FavouriteMovieEntry.COLUMN_NAME_MOVIE_ID + "=?",
                         new String[]{id});
@@ -172,7 +169,6 @@ public class FavouriteMovieContentProvider extends ContentProvider {
         if (moviesDeleted > 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
-
 
 
         return moviesDeleted;

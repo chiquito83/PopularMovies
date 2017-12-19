@@ -11,8 +11,6 @@ import org.json.JSONObject;
 public final class JSONMovieUtils {
 
 
-
-
     public static JSONArray makeJSONObjectArray(String s) throws JSONException {
 
         JSONObject jsonObject = new JSONObject(s);
@@ -35,7 +33,6 @@ public final class JSONMovieUtils {
         reviews = reviewsObject.getJSONArray("results");
 
 
-
         return reviews;
     }
 
@@ -49,8 +46,6 @@ public final class JSONMovieUtils {
 
         return trailersArray;
     }
-
-
 
 
 }

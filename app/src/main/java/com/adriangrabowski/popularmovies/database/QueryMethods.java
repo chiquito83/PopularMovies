@@ -74,7 +74,6 @@ public class QueryMethods {
         uri = uri.buildUpon().appendPath(id.toString()).build();
 
 
-
         context.getContentResolver().delete(uri, null, null);
 
     }
@@ -86,9 +85,7 @@ public class QueryMethods {
 
         if (cursor == null || cursor.getCount() == 0) {
             return false;
-        }
-
-        else {
+        } else {
             return true;
         }
 

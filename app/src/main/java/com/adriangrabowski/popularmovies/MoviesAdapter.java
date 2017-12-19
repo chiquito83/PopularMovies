@@ -22,13 +22,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
     private List<Movie> movieList;
     private Context context;
 
-    public MoviesAdapter(List<Movie> mL){
+    public MoviesAdapter(List<Movie> mL) {
 
         movieList = mL;
 
 
     }
-
 
 
     @Override
@@ -89,7 +88,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
             intent.putExtra("MOVIE", movie);
 
             context.startActivity(intent);
-
 
 
         }

@@ -31,7 +31,8 @@
             android:authorities="com.adriangrabowski.popularmovies"
             android:exported="false" />
 
-        <activity android:name=".FavouriteMovies"
+        <activity
+            android:name=".FavouriteMovies"
             android:label="Favourite Movies:"></activity>
     </application>
 
