@@ -1,5 +1,5 @@
 # PopularMovies
-PopularMovies Stage 1 android app for Udacity Nanodegree
+PopularMovies Stage 2 android app for Udacity Nanodegree
 
 1. GET YOUR OWN API KEY FROM https://www.themoviedb.org
 2. CREATE A NEW FILE IN res/values/ CALLED API_KEY.xml
