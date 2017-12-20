@@ -37,7 +37,6 @@ public class NetworkUtils {
         URL url = null;
         try {
             url = new URL(URLDecoder.decode(builtUri.toString(), "UTF-8"));
-            Log.v("***", url.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
@@ -48,15 +47,17 @@ public class NetworkUtils {
 
     }
 
-    public static URL buildMovieDetailsURL(Context context, long movieId) {
 
+    public static URL buildFetchTrailersUrl(Context context, long movieId) {
         String apiKey = context.getString(R.string.api_key);
         String baseUrl = context.getString(R.string.base_url);
 
+        String movieIdString = Long.toString(movieId);
+
         Uri builtUri = Uri.parse(baseUrl).buildUpon()
+                .appendEncodedPath(movieIdString)
+                .appendEncodedPath("videos")
                 .appendQueryParameter("api_key", apiKey)
-                .appendQueryParameter("append_to_response", "videos,reviews")
-                .appendEncodedPath(Long.toString(movieId))
                 .build();
 
         URL url = null;
@@ -74,8 +75,37 @@ public class NetworkUtils {
 
         return url;
 
-
     }
+
+
+    public static URL buildFetchReviewsUrl(Context context, long movieId) {
+        String apiKey = context.getString(R.string.api_key);
+        String baseUrl = context.getString(R.string.base_url);
+
+        String movieIdString = Long.toString(movieId);
+
+        Uri builtUri = Uri.parse(baseUrl).buildUpon()
+                .appendEncodedPath(movieIdString)
+                .appendEncodedPath("reviews")
+                .appendQueryParameter("api_key", apiKey)
+                .build();
+
+        URL url = null;
+
+        try {
+
+            url = new URL(URLDecoder.decode(builtUri.toString(), "UTF-8"));
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+
+        return url;
+    }
+
 
     public static Uri buildYoutubeUrl(Context context, String youtubeKey) {
         String baseUrl = "https://www.youtube.com/watch";

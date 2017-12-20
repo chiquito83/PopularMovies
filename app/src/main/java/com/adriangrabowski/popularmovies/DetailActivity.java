@@ -80,7 +80,11 @@ public class DetailActivity extends AppCompatActivity {
 
         //movie.clearTrailersAndReviews();
 
-        new DetailsQueryTask().execute(NetworkUtils.buildMovieDetailsURL(this, movie.getId()));
+        //new DetailsQueryTask().execute(NetworkUtils.buildMovieDetailsURL(this, movie.getId()));
+
+        URL[] trailersAndReviewsUrls = {NetworkUtils.buildFetchTrailersUrl(this, movie.getId()), NetworkUtils.buildFetchReviewsUrl(this, movie.getId())};
+
+        new TrailersAndReviewsTask().execute(trailersAndReviewsUrls);
 
 
         if (QueryMethods.isFavourite(context, movie)) {
@@ -88,8 +92,6 @@ public class DetailActivity extends AppCompatActivity {
         } else {
             starCheckBox.setChecked(false);
         }
-
-
 
 
     }
@@ -119,122 +121,132 @@ public class DetailActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
-    
 
-
-
-
-    private class DetailsQueryTask extends AsyncTask<URL, Void, String> {
+    private class TrailersAndReviewsTask extends AsyncTask<URL, Void, String[]> {
 
         @Override
-        protected String doInBackground(URL... urls) {
+        protected String[] doInBackground(URL... urls) {
 
-            URL searchURL = urls[0];
-            String searchResults = null;
+            URL trailersUrl = urls[0];
+            URL reviewsUrl = urls[1];
+
+            String[] searchResults = new String[2];
+
 
             try {
-                searchResults = NetworkUtils.getResponseFromHttpUrl(searchURL);
+                searchResults[0] = NetworkUtils.getResponseFromHttpUrl(trailersUrl);
+                searchResults[1] = NetworkUtils.getResponseFromHttpUrl(reviewsUrl);
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
 
             return searchResults;
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            if (s != null && !s.equals("")) {
+        protected void onPostExecute(String[] result) {
 
 
-                try {
-                    JSONArray reviewsArray = JSONMovieUtils.makeJSONReviewsArray(s);
+            if (result != null && result.length > 0) {
+
+                if (!(result[0].equals("") || result[1].equals(""))) {
 
 
-                    for (int i = 0; i < reviewsArray.length(); i++) {
-
-                        JSONObject jo = reviewsArray.getJSONObject(i);
-
-                        String id = jo.getString("id");
-                        String author = jo.getString("author");
-                        String content = jo.getString("content");
+                    try {
+                        JSONArray reviewsArray = JSONMovieUtils.makeJSONObjectArray(result[1]);
 
 
-                        movie.addReview(id, author, content);
-                    }
+                        for (int i = 0; i < reviewsArray.length(); i++) {
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                            JSONObject jo = reviewsArray.getJSONObject(i);
 
-
-                try {
-                    JSONArray trailersArray = JSONMovieUtils.makeJSONTrailersArray(s);
-
-                    for (int i = 0; i < trailersArray.length(); i++) {
-
-                        JSONObject jo = trailersArray.getJSONObject(i);
-
-                        String id = jo.getString("id");
-                        String name = jo.getString("name");
-                        String siteName = jo.getString("site");
-                        String key = jo.getString("key");
-
-                        movie.addTrailer(id, name, siteName, key);
-
-                    }
+                            String id = jo.getString("id");
+                            String author = jo.getString("author");
+                            String content = jo.getString("content");
 
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                            movie.addReview(id, author, content);
 
-            }
-
-
-            HashSet<Movie.Review> reviews = (HashSet<Movie.Review>) movie.getReviews();
-
-            if (!reviews.isEmpty()) {
-
-                reviewsHeader.setVisibility(View.VISIBLE);
-            }
-
-
-            ArrayList<Movie.Trailer> movieTrailers = new ArrayList<>(movie.getTrailers());
-
-            for (Movie.Trailer trailer : movieTrailers) {
-
-
-                if (trailer.getSiteName().equals("YouTube")) {
-
-
-                    final Uri uri = NetworkUtils.buildYoutubeUrl(context, trailer.getKey());
-
-                    Button trailerButton = new Button(context);
-                    trailerButton.setText(trailer.getName());
-                    trailerButton.setVisibility(View.VISIBLE);
-                    trailerButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                            startActivity(intent);
 
                         }
-                    });
 
-                    trailersLayout.addView(trailerButton);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    try {
+                        JSONArray trailersArray = JSONMovieUtils.makeJSONObjectArray(result[0]);
+
+                        for (int i = 0; i < trailersArray.length(); i++) {
+
+                            JSONObject jo = trailersArray.getJSONObject(i);
+
+                            String id = jo.getString("id");
+                            String name = jo.getString("name");
+                            String siteName = jo.getString("site");
+                            String key = jo.getString("key");
+
+                            movie.addTrailer(id, name, siteName, key);
+
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    HashSet<Movie.Review> reviews = (HashSet<Movie.Review>) movie.getReviews();
+
+                    if (!reviews.isEmpty()) {
+
+                        reviewsHeader.setVisibility(View.VISIBLE);
+                    }
+
+
+                    ArrayList<Movie.Trailer> movieTrailers = new ArrayList<>(movie.getTrailers());
+
+                    for (Movie.Trailer trailer : movieTrailers) {
+
+
+                        if (trailer.getSiteName().equals("YouTube")) {
+
+
+                            final Uri uri = NetworkUtils.buildYoutubeUrl(context, trailer.getKey());
+
+                            Button trailerButton = new Button(context);
+                            trailerButton.setText(trailer.getName());
+                            trailerButton.setVisibility(View.VISIBLE);
+                            trailerButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                    startActivity(intent);
+
+                                }
+                            });
+
+                            trailersLayout.addView(trailerButton);
+
+                        }
+
+
+                    }
+
+
+                    for (Movie.Review review : reviews) {
+                        reviewsTextView.append("\n" + review.getAuthor() + ":" + "\n" + review.getContent() + "\n\n");
+
+                    }
+
 
                 }
 
-
             }
-
-
-            for (Movie.Review review : reviews) {
-                reviewsTextView.append("\n" + review.getAuthor() + ":" + "\n" + review.getContent() + "\n\n");
-
-            }
-
 
 
         }

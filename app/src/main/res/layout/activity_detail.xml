@@ -110,20 +110,13 @@
                 android:text="Reviews:"
                 android:layout_marginTop="24dp"
                 android:padding="8dp"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/reviews_text_view2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"/>
-
-
-
-
-
-
+                android:padding="8dp" />
 
 
         </LinearLayout>

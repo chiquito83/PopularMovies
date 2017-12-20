@@ -66,15 +66,11 @@ public class MainActivity extends AppCompatActivity {
         sortingType = "popular";
 
 
-
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
 
             sortingType = savedInstanceState.getString(SORTING_TYPE, "popular");
 
         }
-
-
-
 
 
         populateList();
@@ -90,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
 
 
     private void populateList() {
