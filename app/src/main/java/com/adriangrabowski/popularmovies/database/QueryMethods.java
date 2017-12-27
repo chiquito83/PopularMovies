@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.widget.Toast;
 
 import com.adriangrabowski.popularmovies.Movie;
 
@@ -63,6 +64,11 @@ public class QueryMethods {
         context.getContentResolver().insert(FavouriteMovieContract.FavouriteMovieEntry.CONTENT_URI,
                 values);
 
+        String movieTitle = movie.getTitle().toUpperCase();
+        String message = "Movie " + movieTitle + " added to favourites.";
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        toast.show();
+
     }
 
     public static void removeFromFavourites(Context context, Movie movie) {
@@ -75,6 +81,13 @@ public class QueryMethods {
 
 
         context.getContentResolver().delete(uri, null, null);
+
+        String movieTitle = movie.getTitle().toUpperCase();
+        String message = "Movie " + movieTitle + " removed from favourites.";
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        toast.show();
+
+
 
     }
 
