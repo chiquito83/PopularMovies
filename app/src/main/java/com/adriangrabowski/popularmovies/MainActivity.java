@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,7 +38,10 @@ public class MainActivity extends AppCompatActivity {
 
     private String sortingType;
 
+    private int scrollPosition;
+
     private static final String SORTING_TYPE = "sorting_type";
+    private static final String SCROLL_POSITION = "scroll_position";
 
 
     @Override
@@ -61,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(moviesAdapter);
 
 
+
+
         context = getApplicationContext();
 
         sortingType = "popular";
@@ -69,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
 
             sortingType = savedInstanceState.getString(SORTING_TYPE, "popular");
+            scrollPosition = savedInstanceState.getInt(SCROLL_POSITION, 0);
 
         }
 
@@ -81,6 +88,12 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
 
         savedInstanceState.putString(SORTING_TYPE, sortingType);
+
+        int position = ((GridLayoutManager)recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+
+        savedInstanceState.putInt(SCROLL_POSITION, position);
+
+        Log.v("scroll", "saving position... : " + position);
 
         super.onSaveInstanceState(savedInstanceState);
 
@@ -170,6 +183,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                 }
+
+                recyclerView.scrollToPosition(scrollPosition);
 
 
                 moviesAdapter.notifyDataSetChanged();
